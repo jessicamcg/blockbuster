@@ -19,10 +19,22 @@
     </header>
     <br>
     <div class="row">
-        <div class="container col-md-5">
+        <div class="container col-md-6">
             <div class="card"
                 <div class="card-body p-2">
-                  <a href="<%=request.getContextPath()%>/login">Click here to login</a>
+                <h3 class="mx-auto mt-3">Login</h3>
+                    <form class="p-3" action="auth" method="post">
+                       <fieldset class="form-group">
+                           <label>Email</label> <input type="text" class="form-control" name="email">
+                       </fieldset>
+
+                       <fieldset class="form-group">
+                           <label>Password</label> <input type="password" class="form-control" name="password">
+                       </fieldset>
+
+                       <input type="submit" value="Login">
+                       <a href="<%=request.getContextPath()%>/signup">New User? Sign up instead</a>
+                    </form>
                 </div>
             </div>
         </div>

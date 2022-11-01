@@ -7,11 +7,11 @@ import java.sql.SQLException;
 
 @NoArgsConstructor
 public class Connection {
-  private String jdbcURL = "jdbc:mysql://localhost:3306/blockbuster?useSSL=false";
-  private String jdbcUsername = "root";
-  private String jdbcPassword = "";
+  private static String jdbcURL = "jdbc:mysql://localhost:3306/blockbuster?useSSL=false";
+  private static String jdbcUsername = "root";
+  private static String jdbcPassword = "";
 
-  protected java.sql.Connection getConnection() {
+  protected static java.sql.Connection getConnection() {
     java.sql.Connection connection = null;
     try {
       Class.forName("com.mysql.cj.jdbc.Driver");//MySQL database version 8.0
