@@ -15,30 +15,29 @@
             </div>
 
             <ul class="navbar-nav">
-                <li><a href="<%=request.getContextPath()%>/movies" class="nav-link">Movies</a></li>
-                <li><a href="<%=request.getContextPath()%>/cart" class="nav-link">Cart</a></li>
+                <li><a href="<%=request.getContextPath()%>/admin/categories" class="nav-link">Categories</a></li>
+                <li><a href="<%=request.getContextPath()%>/admin/movies" class="nav-link">Movies</a></li>
             </ul>
         </nav>
     </header>
     <br>
 
-    <div class="row">
+    <div class="row text-center">
 
         <div class="container col-9">
-            <h3 class="text-center">Available Movies</h3>
+            <h3 class="text-center">Categories</h3>
             <hr>
+            <a class="btn btn-primary" href="adminnewcategoryform">Add New Category</a>
             <br>
-            <div class="card-columns">
-              <c:forEach var="movie" items="${movies}">
-                <div class="card" style="width: 200px, max-height: 200px">
-                  <img class="card-img-top" src=<c:out value='${movie.imageURL}'/> alt=<c:out value='${movie.title}'/> />
+            <div class="row justify-content-center">
+              <c:forEach var="category" items="${categories}">
+                <div class="card col-sm-12 col-md-4 col-lg-3 p-0 m-2" style="width: 200px, max-height: 200px">
                   <div class="card-body">
-                    <h5 class="card-title"><c:out value="${movie.title}" /></h5>
-                    <p class="card-text"><c:out value="${movie.summary}" /></p>
-                    <p class="card-text font-weight-light">$<c:out value="${movie.price}" /></p>
+                    <h5 class="card-title"><c:out value="${category.name}" /></h5>
                   </div>
-                  <div class="card-footer d-flex justify-content-center">
-                    <a href="addtocart?id=<c:out value='${movie.id}' />" class="btn btn-primary">Add to Cart</a>
+                  <div class="card-footer d-flex justify-content-around">
+                    <a href="admineditcategoryform?id=<c:out value='${category.id}' />" class="btn btn-primary">Edit</a>
+                    <a href="admindeletecategory?id=<c:out value='${category.id}' />" class="btn btn-warning">Delete</a>
                   </div>
                 </div>
               </c:forEach>
