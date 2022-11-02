@@ -10,7 +10,7 @@
     <header>
         <nav class="navbar navbar-expand-md navbar-dark" style="background-color: darkblue">
             <div>
-                <a href="<%=request.getContextPath()%>/" class="navbar-brand text-warning font-weight-bold"> Blockbuster </a>
+                <a href="<%=request.getContextPath()%>/" class="navbar-brand"> Blockbuster </a>
             </div>
             <ul class="navbar-nav">
                 <li><a href="<%=request.getContextPath()%>/movies" class="nav-link">Movies</a></li>

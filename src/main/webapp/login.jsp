@@ -10,7 +10,7 @@
     <header>
         <nav class="navbar navbar-expand-md navbar-dark" style="background-color: darkblue">
             <div>
-                <a href="<%=request.getContextPath()%>/" class="navbar-brand"> Blockbuster </a>
+                <a href="<%=request.getContextPath()%>/" class="navbar-brand text-warning font-weight-bold"> Blockbuster </a>
             </div>
             <ul class="navbar-nav">
                 <li><a href="<%=request.getContextPath()%>/movies" class="nav-link">Movies</a></li>
@@ -32,7 +32,7 @@
                            <label>Password</label> <input type="password" class="form-control" name="password">
                        </fieldset>
 
-                       <input type="submit" value="Login">
+                       <input class="btn btn-primary" type="submit" value="Login">
                        <a href="<%=request.getContextPath()%>/signup">New User? Sign up instead</a>
                     </form>
                 </div>

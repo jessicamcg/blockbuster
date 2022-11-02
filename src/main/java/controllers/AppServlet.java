@@ -1,9 +1,11 @@
 package controllers;
 
 import dao.AdminDAO;
+import dao.CategoryDAO;
 import dao.CustomerDAO;
 import dao.MovieDAO;
 import model.Admin;
+import model.Category;
 import model.Customer;
 import model.Movie;
 
@@ -21,12 +23,14 @@ import java.util.List;
 
 @WebServlet("/")
 public class AppServlet extends HttpServlet {
-  private CustomerDAO CDAO;
+  private CustomerDAO custDAO;
+  private CategoryDAO catDAO;
   private AdminDAO ADAO;
   private MovieDAO MDAO;
 
   public void init() {
-    CDAO = new CustomerDAO();
+    custDAO = new CustomerDAO();
+    catDAO = new CategoryDAO();
     ADAO = new AdminDAO();
     MDAO = new MovieDAO();
   }
@@ -39,7 +43,7 @@ public class AppServlet extends HttpServlet {
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
           throws ServletException, IOException {
     String action = request.getServletPath();
-
+    System.out.println(action);
     try {
       switch (action) {
         case "/":
@@ -60,6 +64,39 @@ public class AppServlet extends HttpServlet {
         case "/movies" :
           renderMovies(request, response);
           break;
+        case "/addtocart" :
+          addToCart(request,response);
+          break;
+        case "/cart" :
+          renderCart(request,response);
+          break;
+        case "/admin":
+          renderDashboard(request, response);
+          break;
+        case "/admineditcategoryform":
+          renderEditCategoryForm(request, response);
+          break;
+        case "/adminnewcategoryform":
+          renderNewCategoryForm(request, response);
+          break;
+        case "/admincategories":
+          renderCategories(request, response);
+          break;
+        case "/admininsertcategory":
+          insertCategory(request, response);
+          break;
+        case "/adminupdatecategory":
+          updateCategory(request, response);
+          break;
+        case "/admindeletecategory":
+          deleteCategory(request,response);
+          break;
+        case "/adminmovies":
+          renderAdminMovies(request, response);
+          break;
+        case "/admininsertmovies":
+          insertMovie(request, response);
+          break;
         default:
           renderHome(request, response);
           break;
@@ -67,6 +104,54 @@ public class AppServlet extends HttpServlet {
     } catch (Exception ex) {
       ex.printStackTrace();
     }
+  }
+
+  private void deleteCategory(HttpServletRequest request, HttpServletResponse response) throws IOException, SQLException {
+    int id = Integer.parseInt(request.getParameter("id"));
+    catDAO.deleteCat(id);
+    response.sendRedirect("admincategories");
+
+  }
+
+  private void updateCategory(HttpServletRequest request, HttpServletResponse response) throws IOException, SQLException {
+    int id = Integer.parseInt(request.getParameter("id"));
+    String name = request.getParameter("name");
+    Category cat = new Category(id, name);
+    catDAO.updateCat(cat);
+    response.sendRedirect("admincategories");
+  }
+
+  private void renderNewCategoryForm(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+    HttpSession session=request.getSession();
+    if (session == null) {
+      renderLogin(request, response);
+    } else {
+      RequestDispatcher dispatcher = request.getRequestDispatcher("category-form.jsp");
+      dispatcher.forward(request, response);
+    }
+  }
+
+  private void renderEditCategoryForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    int id = Integer.parseInt(request.getParameter("id"));
+    Category existingCat = catDAO.selectCat(id);
+    request.setAttribute("category", existingCat);
+    RequestDispatcher dispatcher = request.getRequestDispatcher("category-form.jsp");
+    dispatcher.forward(request, response);
+  }
+
+  private void renderCart(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+    HttpSession session=request.getSession();
+    if (session.getAttribute("auth") == null) {
+      renderLogin(request, response);
+    } else {
+      List<Movie> movies = MDAO.selectAllTitles();
+      request.setAttribute("movies", movies);
+      RequestDispatcher dispatcher = request.getRequestDispatcher("cart.jsp");
+      dispatcher.forward(request, response);
+    }
+  }
+
+  private void addToCart(HttpServletRequest request, HttpServletResponse response) {
   }
 
   private void renderMovies(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -103,12 +188,12 @@ public class AppServlet extends HttpServlet {
       if(email.equals(admin.getEmail())&& password.equals(admin.getPassword())) {
         HttpSession session=request.getSession();
         session.setAttribute("auth", admin);
-        response.sendRedirect("movies");
+        response.sendRedirect("admin");
       } else {
         loginError(request,response);
       }
-    } else if (CDAO.getCustomer(email) != null){
-      Customer customer = CDAO.getCustomer(email);
+    } else if (custDAO.getCustomer(email) != null){
+      Customer customer = custDAO.getCustomer(email);
       if (email.equals(customer.getEmail())&& password.equals(customer.getPassword())){
         HttpSession session=request.getSession();
         session.setAttribute("auth", customer);
@@ -141,12 +226,48 @@ public class AppServlet extends HttpServlet {
     String email = request.getParameter("email");
     String password = request.getParameter("password");
     Customer newCustomer = new Customer(firstName,lastName,phone,address,email,password);
-    CDAO.insertCustomer(newCustomer);
+    custDAO.insertCustomer(newCustomer);
 
-    Customer customer = CDAO.getCustomer(email);
+    Customer customer = custDAO.getCustomer(email);
     HttpSession session=request.getSession();
     session.setAttribute("auth", customer);
-    response.sendRedirect("titles");
+    response.sendRedirect("movies");
 
+  }
+  private void renderCategories(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    HttpSession session=request.getSession();
+    if (session.getAttribute("auth") instanceof Admin) {
+      List<Category> cats = catDAO.selectAllCats();
+      request.setAttribute("categories", cats);
+      RequestDispatcher dispatcher = request.getRequestDispatcher("categories.jsp");
+      dispatcher.forward(request, response);
+    } else {
+      response.sendRedirect("login");
+    }
+
+  }
+
+  private void insertCategory(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
+    String name = request.getParameter("name");
+    Category newCat = new Category(name);
+    catDAO.insertCategory(newCat);
+    response.sendRedirect("admincategories");
+  }
+
+  private void renderAdminMovies(HttpServletRequest request, HttpServletResponse response) {
+
+  }
+
+  private void insertMovie(HttpServletRequest request, HttpServletResponse response) {
+
+  }
+
+  private void renderDashboard(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    HttpSession session=request.getSession();
+    if (session.getAttribute("auth") instanceof Admin) {
+      response.sendRedirect("admin-dashboard.jsp");
+    } else {
+      response.sendRedirect("index.jsp");
+    }
   }
 }
