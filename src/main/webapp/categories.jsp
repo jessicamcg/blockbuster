@@ -15,8 +15,11 @@
             </div>
 
             <ul class="navbar-nav">
-                <li><a href="<%=request.getContextPath()%>/admincategories" class="nav-link">Categories</a></li>
-                <li><a href="<%=request.getContextPath()%>/adminmovies" class="nav-link">Movies</a></li>
+              <li><a href="<%=request.getContextPath()%>/admincategories" class="nav-link">Categories</a></li>
+              <li><a href="<%=request.getContextPath()%>/adminmovies" class="nav-link">Movies</a></li>
+              <c:if test="${auth != null}">
+                <li><a href="<%=request.getContextPath()%>/logout" class="nav-link">Logout</a></li>
+              </c:if>
             </ul>
         </nav>
     </header>

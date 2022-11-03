@@ -58,6 +58,9 @@ public class AppServlet extends HttpServlet {
         case "/auth" :
           auth(request, response);
           break;
+        case "/logout" :
+          logout(request, response);
+          break;
         case "/newcustomer" :
           insertNewCustomer(request, response);
           break;
@@ -117,7 +120,6 @@ public class AppServlet extends HttpServlet {
       ex.printStackTrace();
     }
   }
-
 
   private void renderAdminMovies(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
     List<Movie> movies = MDAO.selectAllMovies();
@@ -266,6 +268,18 @@ public class AppServlet extends HttpServlet {
     }
   }
 
+  private void logout(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+    response.setContentType("text/html");
+    PrintWriter pw=response.getWriter();
+
+    HttpSession session=request.getSession();
+    session.invalidate();
+    pw.print("<div class=\"alert alert-success\" role=\"alert\">\n" +
+            "  You are successfully logged out\n" +
+            "</div>");
+    RequestDispatcher rd=request.getRequestDispatcher("/index.jsp");
+    rd.include(request, response);
+  }
   private void loginError(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
     response.setContentType("text/html");
     PrintWriter pw=response.getWriter();
