@@ -56,6 +56,7 @@ public class CategoryDAO {
       e.printStackTrace();
     }
   }
+
   public boolean deleteCat(int id) throws SQLException {
     boolean rowDeleted;
     try (java.sql.Connection connection = dao.Connection.getConnection();
@@ -65,6 +66,7 @@ public class CategoryDAO {
     }
     return rowDeleted;
   }
+
   public List<Category> selectAllCats() {
 
     List <Category> cats = new ArrayList< >();

@@ -18,4 +18,12 @@ public class Movie {
   private int categoryID;
 
 
+  public Movie(String title, String summary, float price, int stock, String imageURL, int categoryID) {
+    this.title = title;
+    this.summary = summary;
+    this.price = price;
+    this.stock = stock;
+    this.imageURL = imageURL;
+    this.categoryID = categoryID;
+  }
 }

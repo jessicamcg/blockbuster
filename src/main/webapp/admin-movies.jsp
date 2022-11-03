@@ -22,22 +22,28 @@
     </header>
     <br>
 
-    <div class="row text-center">
+    <div class="row">
 
         <div class="container col-9">
-            <h3 class="text-center">Categories</h3>
+            <h3 class="text-center">Available Movies</h3>
             <hr>
-            <a class="btn btn-primary" href="adminnewcategoryform">Add New Category</a>
+              <div class="d-flex justify-content-around">
+                <a class="btn btn-primary" href="<%=request.getContextPath()%>/adminnewmovieform">Add a Movie</a>
+              </div>
             <br>
-            <div class="row justify-content-center">
-              <c:forEach var="category" items="${categories}">
-                <div class="card col-sm-12 col-md-4 col-lg-3 p-0 m-2" style="width: 200px, max-height: 200px">
+            <div class="card-columns">
+              <c:forEach var="movie" items="${movies}">
+                <div class="card p-0" style="">
+                  <img class="card-img-top" src=<c:out value='${movie.imageURL}'/> alt=<c:out value='${movie.title}'/> />
                   <div class="card-body">
-                    <h5 class="card-title"><c:out value="${category.name}" /></h5>
+                    <h5 class="card-title"><c:out value="${movie.title}" /></h5>
+                    <p class="card-text"><c:out value="${movie.summary}" /></p>
+                    <p class="card-text font-weight-light">In Stock: <c:out value="${movie.stock}" /></p>
+                    <p class="card-text font-weight-light">$<c:out value="${movie.price}" /></p>
                   </div>
                   <div class="card-footer d-flex justify-content-around">
-                    <a href="admineditcategoryform?id=<c:out value='${category.id}' />" class="btn btn-primary">Edit</a>
-                    <a href="admindeletecategory?id=<c:out value='${category.id}' />" class="btn btn-warning">Delete</a>
+                    <a href="admineditmovieform?id=<c:out value='${movie.id}' />" class="btn btn-primary">Edit</a>
+                    <a href="admindeletemovie?id=<c:out value='${movie.id}' />" class="btn btn-warning">Delete</a>
                   </div>
                 </div>
               </c:forEach>

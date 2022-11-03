@@ -37,7 +37,7 @@
                     <h4 class="text-center">Movie</h4>
                     <div class="text-center">
                       <a class="btn btn-primary" href="<%=request.getContextPath()%>/adminmovies">View Movies</a>
-                      <a class="btn btn-primary" href="<%=request.getContextPath()%>/admininsertmovie">Add a Movie</a>
+                      <a class="btn btn-primary" href="<%=request.getContextPath()%>/adminnewmovieform">Add a Movie</a>
                     </div>
                   </div>
                 </div>
