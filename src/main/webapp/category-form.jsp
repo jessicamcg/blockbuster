@@ -35,10 +35,10 @@
           <caption>
               <h2>
                   <c:if test="${category != null}">
-                      Edit Employee
+                      Edit Category
                   </c:if>
                   <c:if test="${category == null}">
-                      Add New Employee
+                      Add New Category
                   </c:if>
               </h2>
           </caption>

@@ -27,7 +27,7 @@ public class CartDAO {
         int stock = rs.getInt("stock");
         String imageURL = rs.getString("image_url");
         int categoryID = rs.getInt("category_id");
-        movies.add(new Movie(id, title, summary, price, stock, imageURL,categoryID));
+        movies.add(new Movie(title, summary, price, stock, imageURL,categoryID));
       }
     } catch (SQLException e) {
       e.printStackTrace();
